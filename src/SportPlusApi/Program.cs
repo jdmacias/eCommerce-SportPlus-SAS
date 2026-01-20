@@ -3,32 +3,36 @@ using SportPlusApi.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// 1. Agrega esta línea para que el sistema reconozca tus Controllers
+// 1. Servicios básicos
 builder.Services.AddControllers();
 
-// No olvides agregar este using arriba del todo:
-// using Microsoft.EntityFrameworkCore;
-// using SportPlusApi.Data;
+// 2. CONFIGURACIÓN DE SWAGGER
+// Solo dejamos estas dos para la documentación
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
+// Tu configuración de SQLite
 builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlite("Data Source=SportPlus.db"));
 
-builder.Services.AddOpenApi();
+// --- ELIMINAMOS builder.Services.AddOpenApi() para evitar el choque ---
 
 var app = builder.Build();
 
+// 3. ACTIVACIÓN DE LA INTERFAZ VISUAL
 if (app.Environment.IsDevelopment())
 {
-    app.MapOpenApi();
+    app.UseSwagger();
+    app.UseSwaggerUI();
+
+    // --- ELIMINAMOS app.MapOpenApi() para evitar el choque ---
 }
 
-// Comentamos la redirección HTTPS para evitar el error amarillo que te salió antes
+// Mantenemos tu configuración de seguridad actual
 // app.UseHttpsRedirection(); 
 
-// 2. Agrega esta línea para que las rutas (como /api/productos) funcionen
 app.MapControllers();
 
-// Podemos dejar o quitar lo del WeatherForecast, no afectará a tus productos
 app.MapGet("/weatherforecast", () => {
     return "El clima está bien, ¡pero tus productos son mejores!";
 });
