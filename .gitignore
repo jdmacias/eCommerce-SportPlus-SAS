@@ -482,3 +482,14 @@ $RECYCLE.BIN/
 
 # Vim temporary swap files
 *.swp
+
+# Ignorar bases de datos SQLite en cualquier carpeta
+*.db
+*.db-shm
+*.db-wal
+
+# Ignorar carpetas de compilación
+bin/
+obj/
+src/SportPlusApi/bin/
+src/SportPlusApi/obj/
